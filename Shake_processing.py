@@ -25,7 +25,7 @@ def precise_match_shakes(shake1, shake2, timeframe):
     for x in range(timeframe):
         diff=0
         for y in range(min(len(shake1),len(shake2))):
-            diff+=(abs(shake1[y]['time']-shake2[y]['time'])**2)
+            diff+=min([ timestamp_match(shake1, shake2, z, x) for z in range(len(shake2))])
         if diff<match_threshold:
             if magnitude_match(shake1, shake2):
                 min_diff=diff
@@ -43,3 +43,6 @@ def magnitude_match(shake1, shake2):
         return True
     else:
         return False
+
+def timestamp_match(shake1, shake2,index, offset):
+    return (abs(shake1[index]['time']-shake2[index]['time']+offset)**2)
